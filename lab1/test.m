@@ -1,34 +1,23 @@
 clear;
 close all;
 
-joints = zeros(1,6);
+joints1 = [pi/4,pi/4,0,0,0,0];
+joints2 = [-pi/6,0,-pi/6,pi/4,0,0];
+joints3 = [pi, degtorad(13.5), degtorad(20), 0, 0, 4];
+joints4 = [-pi/2, pi/4, -pi/2, 0, 0, 4];
+joints5 = [-pi/2, 0, 0, 0, 0, 8];
 
-quiver3(0,0,0,0,0,0);
-hold on;
-m = 30;
-axis([-m,m, -m,m, -m,m]);
-axis square;
-rotate3d on;
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-
-
-
-
-origin = [0,0,10];
-
+% paramter sweep
 a1 = -pi/8;
 a2 = pi/8;
-j = 5;
-joints(4) = pi/2;
-joints(1) = -pi/8;
-joints(2) = -pi/4;
-joints(3) = pi/4;
-
+j = 1;
+lab_fk(joints4)
+%{
 for th = a1:.1:a2
     % move joint
     joints(j) = th;
-    [tool, T] = lab_fk(joints);
+    [tool] = lab_fk(joints);
 end
+
+%}
 
