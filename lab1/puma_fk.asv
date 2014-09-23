@@ -1,23 +1,17 @@
-function [ tool_pos] = lab_fk(joints, fast)
+function [ tool_pos] = puma_fk(joints, fast)
 %lab_fk returns the position of the tool frame relative to the base frame
 %with respect to the jointe paramters passed in.
 
 % tool_pos = [x,y,z]
-% joint_params = [waist, shoulder, elbow, wrist pitch, wrist roll,
-% displacement]
+% joint_params = [waist, shoulder, elbow, wr-roll, wr-pitch, end-roll]
 
 %{
-link, ai, alphi, di, thi
-    1, 0, -90, 10, th1       
-    2, 10, 0, 0, th2-90
-    3, 10, 0, 0, th3+90
-    4, 0, 90, 0, th4+90
-    5, 2,  0, 0, th5
 
 Ai = Rot(z,thi) * Trans(z,di) * Trans(x,ai) * Rot(x,alphi)
 %}
 
-arm_length = 10;
+shoulder_height = 13;
+
 
 % getting DH params
 a = [0,arm_length,arm_length,0,0];
