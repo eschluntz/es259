@@ -9,7 +9,6 @@ function [ tool_pos] = puma_fk(joints, fast)
 
 Ai = Rot(z,thi) * Trans(z,di) * Trans(x,ai) * Rot(x,alphi)
 %}
-
 shoulder_height = 13;
 upper_arm = 8;
 fore_arm = 8;

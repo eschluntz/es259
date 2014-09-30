@@ -12,7 +12,7 @@ link, ai, alphi, di, thi
     2, 10, 0, 0, th2-90
     3, 10, 0, 0, th3+90
     4, 0, 90, 0, th4+90
-    5, 2,  0, 0, th5
+    5, 0,  0, 2, th5
 
 Ai = Rot(z,thi) * Trans(z,di) * Trans(x,ai) * Rot(x,alphi)
 %}
