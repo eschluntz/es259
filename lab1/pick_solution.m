@@ -8,6 +8,7 @@ function [ S, valid ] = pick_solution(limits, slns)
     valid = false;
     mag = Inf;
     S = zeros(m,1);
+    limits = d2r(limits);
     for i = 1:n
         if (all(slns(:,i) > limits(:,1)) && all(slns(:,i) < limits(:,2)))
             valid = true;

@@ -1,6 +1,5 @@
-%function Q = lab_ik(T)
+function Q = lab_ik(T)
 %lab_ik Calculates inverse kinematics of the lab arm
-
 
     % desired configuration
     R = T(1:3,1:3);
@@ -12,7 +11,7 @@
     alpha = [-pi/2, 0, 0, pi/2,0];
     d = [10,0,0,0,2];
 
-    % joint limitations
+    % joint limitations in degrees
     qlimits = [-180,180; 0, 45; -90, 30; -45, 45; -75, 75];
 
     %{
@@ -31,15 +30,36 @@
     theta1 = atan2(o_wrist(2), o_wrist(1));
 
     dist2 = norm(o_wrist - [0,0,d(1)]')^2;
+    
     cos3 = (dist2 - a(2)^2 - a(3)^2) / (2 * a(2) * a(3));
-    theta3(1) = atan2(cos3,sqrt(1-cos3^2));
-    theta3(2) = atan2(cos3, -sqrt(1-cos3^2));
+    
+    % checking for unreachable position
+    if cos3 < -1 || cos3 > 1
+        disp('impossible position');
+        Q = zeros(5,1);
+        return;
+    end
+    % pre allocating
+    theta2 = [0,0];
+    theta3 = [0,0];
+    theta4 = [0,0];
+    theta5 = [0,0];
+    theta6 = [0,0];
+    
+    theta3(1) = atan2(sqrt(1-cos3^2),cos3);
+    theta3(2) = atan2(-sqrt(1-cos3^2),cos3);
 
     direct = atan2(o_wrist(3) - d(1), sqrt(o_wrist(1)^2 + o_wrist(2)^2));
+    
+    
+    
     for sn = 1:2
         other = atan2(a(3)*sin(theta3(sn)), a(2) + a(3)*cos(theta3(sn)));
         theta2(sn) = direct - other;
 
+        % correct for angle offsets
+        theta2(sn) = pi/2 - theta2(sn);
+        theta3(sn) = -pi/2 - theta3(sn);
         %{
             Step 3: find the wrist orientation relative to arm
             R = R03 * R36
@@ -71,7 +91,7 @@
 
         theta4(sn,:) = phi;
         theta5(sn,:) = th;
-        theta6(sn,:) = psi;
+        theta6(sn,:) = psi - pi/2;
     end
 
     %{
@@ -82,11 +102,11 @@
     for sn23 = 1:2
         for sn45 = 1:2
             slns = [slns, [theta1, theta2(sn23), theta3(sn23),...
-                    theta4(sn23,sn45), theta5(sn23,sn45)]'];
+                    theta4(sn23,sn45), theta6(sn23,sn45)]'];
         end
     end
 
-    [Q, ~] = pick_solution(qlimits,slns);
+    [Q, is_valid] = pick_solution(qlimits,slns);
 
-%end
+end
 
