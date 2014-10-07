@@ -1,6 +1,7 @@
 function Q = lab_ik(T)
 %lab_ik Calculates inverse kinematics of the lab arm
-
+%     addpath('util/');
+    Q=ones(5,1);
     % desired configuration
     R = T(1:3,1:3);
     o_tool = T(1:3,4);
@@ -12,7 +13,7 @@ function Q = lab_ik(T)
     d = [10,0,0,0,2];
 
     % joint limitations in degrees
-    qlimits = [-180,180; 0, 45; -90, 30; -45, 45; -75, 75];
+    qlimits = [-181,181; -1, 46; -91, 31; -46, 46; -76, 76];
 
     %{
         Step 1: Find wrist center
@@ -35,8 +36,8 @@ function Q = lab_ik(T)
     
     % checking for unreachable position
     if cos3 < -1 || cos3 > 1
-        disp('impossible position');
-        Q = zeros(5,1);
+%         disp('impossible position');
+        Q = ones(5,1)*3;
         return;
     end
     % pre allocating
@@ -45,6 +46,9 @@ function Q = lab_ik(T)
     theta4 = [0,0];
     theta5 = [0,0];
     theta6 = [0,0];
+    phi = [0,0];
+    th = [0,0];
+    psi = [0,0];
     
     theta3(1) = atan2(sqrt(1-cos3^2),cos3);
     theta3(2) = atan2(-sqrt(1-cos3^2),cos3);
@@ -98,15 +102,18 @@ function Q = lab_ik(T)
         Step 5: Pick the best solution
         first construct a vector of solutions
     %}
-    slns = zeros(0);
+    slns = zeros(5,4);
+    i = 1;
     for sn23 = 1:2
         for sn45 = 1:2
-            slns = [slns, [theta1, theta2(sn23), theta3(sn23),...
-                    theta4(sn23,sn45), theta6(sn23,sn45)]'];
+            slns(:,i) = [theta1, theta2(sn23), theta3(sn23),...
+                    theta4(sn23,sn45), theta6(sn23,sn45)]';
+            i= i+1;
         end
     end
 
     [Q, is_valid] = pick_solution(qlimits,slns);
-
+    Q = r2d(Q);
+% 
 end
 

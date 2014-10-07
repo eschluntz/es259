@@ -7,8 +7,10 @@ function [ S, valid ] = pick_solution(limits, slns)
     m = size(slns,1); % number of dimensions
     valid = false;
     mag = Inf;
-    S = zeros(m,1);
+    S = ones(m,1)*2;
+    slns
     limits = d2r(limits);
+    limits
     for i = 1:n
         if (all(slns(:,i) > limits(:,1)) && all(slns(:,i) < limits(:,2)))
             valid = true;
@@ -18,5 +20,6 @@ function [ S, valid ] = pick_solution(limits, slns)
             end
         end
     end
+    valid
 end
 
