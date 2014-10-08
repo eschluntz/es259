@@ -1,4 +1,4 @@
-function [ tool_pos] = lab_fk(joints, fast)
+function [ tool_pos, T] = lab_fk(joints, fast)
 %lab_fk returns the position of the tool frame relative to the base frame
 %with respect to the jointe paramters passed in.
 

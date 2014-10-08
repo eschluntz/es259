@@ -1,4 +1,4 @@
-%function Q = puma_ik(T)
+function Q = puma_ik(T)
 %puma_ik Calculates inverse kinematics of the puma arm
 addpath('util/');
 % desired configuration
@@ -75,7 +75,7 @@ theta3 = [0,0];
 
 % arm up, arm down
 theta3(1) = atan2(sqrt(1-cos3^2),cos3);
-theta3(2) = atan2(-sqrt(1-cos3^2),cos3)
+theta3(2) = atan2(-sqrt(1-cos3^2),cos3);
 
 % saving
 Q(3,[1,2,5,6]) = theta3(1);
@@ -87,9 +87,7 @@ direct = atan2(dz, dh);
 other1 = atan2(d(4)*sin(theta3(1)), a(2) + d(4)*cos(theta3(1)));
 other2 = atan2(d(4)*sin(theta3(2)), a(2) + d(4)*cos(theta3(2)));
 theta2(1) = direct - other1;
-theta2(2) = direct - other2
-sln_delta = theta2(1) - theta2(2)
-left_delta = pi - theta2(2)*2 - sln_delta
+theta2(2) = direct - other2;
 Q3s = Q;
 % right arm
 for sn = 1:4
@@ -114,7 +112,7 @@ for sn = 1:2:8
     A1 = rotz(Q(1,sn)) * transz(d(1)) * transx(a(1)) * rotx(alpha(1));
     A2 = rotz(Q(2,sn)) * transz(d(2)) * transx(a(2)) * rotx(alpha(2));
     A3 = rotz(Q(3,sn)) * transz(d(3)) * transx(d(4)) * rotx(alpha(3));
-    T03 = A1*A2*A3
+    T03 = A1*A2*A3;
     R03 = T03(1:3,1:3);
     R36 = R03' * R;
     
@@ -139,5 +137,5 @@ end
 
 % return all solutions in Q
 
-%end
+end
 

@@ -1,6 +1,5 @@
-function Q = lab_ik(T)
+function [Q, n_valid] = lab_ik(T)
 %lab_ik Calculates inverse kinematics of the lab arm
-    addpath('util/');
     % desired configuration
     R = T(1:3,1:3);
     o_tool = T(1:3,4);
@@ -13,6 +12,8 @@ function Q = lab_ik(T)
 
     % joint limitations in degrees
     qlimits = [-180,180; 0, 45; -90, 30; -45, 45; -75, 75];
+    slop = [-5,5;-5,5;-5,5;-5,5;-5,5;];
+    qlimits = qlimits + slop;
 
     %{
         Step 1: Find wrist center
@@ -106,7 +107,7 @@ function Q = lab_ik(T)
         end
     end
 
-    [Q, is_valid] = pick_solution(qlimits,slns);
+    [Q, n_valid] = pick_solution(qlimits,slns);
 
 end
 
