@@ -1,4 +1,5 @@
-
+clear;
+close all;
 % using the Matlab BGL graph library
 addpath('matlab_bgl');
 
@@ -43,11 +44,41 @@ disp('done');
 draw(A,nodes);
 
 % drawing shortest path
-draw_sp(pred,nodes);
+draw_sp(pred,nodes, 1, 2);
 
 % extract waypoints of shortest path
 wps = get_waypoints(pred, nodes, 1, 2);
 wps = smaller_steps(wps,.5);
+
+% now doing everything again to smooth -----------------------
+nodes = wps;
+n_nodes = size(wps,1);
+A = sparse(n_nodes,n_nodes);
+% checking paths
+for i = 1:n_nodes
+    for j = 1:n_nodes
+        if valid_segment(nodes(i,:), nodes(j,:), O, radsSq)
+            A(i,j) = norm(nodes(i,:) - nodes(j,:));
+            A(j,i) = A(i,j);
+        end
+    end
+end
+
+% getting shortest path
+diff = nodes - repmat(finish,n_nodes,1);
+heuristic = sqrt(sum(diff.*diff,2));
+[d, pred, rank] = astar_search(A,1,heuristic);
+
+disp('done');
+draw(A,nodes);
+
+% drawing shortest path
+draw_sp(pred,nodes, 1, n_nodes);
+
+% extract waypoints of shortest path
+wps = get_waypoints(pred, nodes, 1, n_nodes);
+wps = smaller_steps(wps,.5);
+
 
 figure;
 scatter(wps(:,1),wps(:,2));

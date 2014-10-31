@@ -8,18 +8,18 @@ function [ valid ] = valid_segment(p1, p2, obsts, radSq)
     l1 = p2 - p1;
     l1 = l1 / norm(l1);
     
-    for i = 1:size(obsts,1)
-        
-        % first checking distance between end points
-        %if (normSq(p1 - obsts(i,:) < radSq(i) || normSq(p2 - obsts(i,:) < radSq(i))
-        d = normSq(cross([l1,0], [obsts(i,:) - p1,0]));
-        if (d < radSq(i))
-            valid = 0;
-            %disp('broken');
-            return;
-        end
+    p1 = repmat(p1,size(obsts,1),1);
+    p2 = repmat(p2,size(obsts,1),1);
+    
+    dist2s = point_line_seg_dist(p1,p2, obsts);
+    
+    collisions = dist2s < radSq;
+    
+    if (sum(collisions) == 0)
+        valid = 1;
+    else
+        valid = 0;
     end
-    valid = 1;
 end
  
 
