@@ -25,7 +25,7 @@ disp(num2str(size(a,2)-3))
 
 radius = 3;
 t_delta = tf - 9.9;
-w = 2;
+w = .3;
 thetas = lab_circle_trajectory(radius, dt, length(t_vect)-2, w*pi/t_delta);
 
 theta1 = thetas(1,:);
@@ -42,9 +42,11 @@ a(4,2:end-2) = theta3;
 a(5,2:end-2) = theta4;
 a(6,2:end-2) = theta5;
 
+a(:,1:30)
+
 
 %% Run this section to check the validity of your trajectory
-load('ERIK_SCHLUNTZ_PATH.mat');
+load('paths/ERIK_SCHLUNTZ_AVOID2_SLOW.mat');
 err = 0;
 
 t1 = a(2,1:end-2); t1v = diff(t1)/dt; t1a = diff(diff(t1))/dt;

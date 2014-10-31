@@ -4,7 +4,7 @@ q_default = zeros(1,6);
 [origin, T] = lab_fk(q_default, true);
 thetas = [];
 
-origin(1) = origin(1) + 3; % starting location
+origin(1) = origin(1) - radius; % starting location
 
 % looping
 t = 0;
