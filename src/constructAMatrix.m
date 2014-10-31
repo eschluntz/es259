@@ -5,7 +5,7 @@ close all
 %% Choose length and name of your trajectory:
 
 tf = 45; %in seconds
-fname = 'ERIK_SCHLUNTZ';
+fname = 'ERIK_SCHLUNTZ_PATH';
 
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,8 +25,9 @@ disp(num2str(size(a,2)-3))
 
 radius = 3;
 t_delta = tf - 9.9;
-w = 8
+w = 2;
 thetas = lab_circle_trajectory(radius, dt, length(t_vect)-2, w*pi/t_delta);
+
 theta1 = thetas(1,:);
 theta2 = thetas(2,:);
 theta3 = thetas(3,:);
@@ -43,7 +44,7 @@ a(6,2:end-2) = theta5;
 
 
 %% Run this section to check the validity of your trajectory
- load('ERIK_SCHLUNTZ.mat');
+load('ERIK_SCHLUNTZ_PATH.mat');
 err = 0;
 
 t1 = a(2,1:end-2); t1v = diff(t1)/dt; t1a = diff(diff(t1))/dt;

@@ -1,0 +1,65 @@
+
+    % using the Matlab BGL graph library
+    addpath('matlab_bgl');
+
+    % workspace bounds
+    x_lim = [0,10];
+    y_lim = [0,10];
+
+    % obstacles
+    O = [6,6; 3,6; 9,6];
+    rads = [1,1,2]';
+
+    % other
+    start = [0,0];
+    finish = [10,10];
+
+    % creating nodes
+    intermediate_nodes = 50; % use n_nodes to include start and finish
+    nodes = get_nodes(x_lim, y_lim, intermediate_nodes);
+    nodes = [start; finish; nodes];
+    n_nodes = intermediate_nodes+2;
+    A = sparse(n_nodes,n_nodes);
+
+    % checking paths
+    for i = 1:n_nodes
+        for j = i:n_nodes
+            if valid_segment(nodes(i,:), nodes(j,:), O, rads)
+                A(i,j) = norm(nodes(i,:) - nodes(j,:));
+                A(j,i) = A(i,j);
+            end
+        end
+    end
+
+    % getting shortest path
+    diff = nodes - repmat(finish,n_nodes,1);
+    heuristic = sqrt(sum(diff.*diff,2));
+    [d, pred, rank] = astar_search(A,1,heuristic);
+
+    disp('done');
+    draw(A,nodes);
+
+    % drawing shortest path
+    draw_sp(pred,nodes);
+
+    % extract waypoints of shortest path
+    wps = get_waypoints(pred, nodes, 1, 2);
+    wps = smaller_steps(wps,.5);
+
+    figure;
+    scatter(wps(:,1),wps(:,2));
+
+    thetas = [];
+
+    % getting inverse kinematics to control the arm
+    tool_z = 6;
+    for i = 1:size(wps,1)
+        [th1, th2, th3, th4, th5] = inverse_kinematics_lab4(wps(1),wps(2), tool_z);
+        ths = [th1, th2, th3, th4, th5]';
+        thetas = [thetas, ths];
+    end
+    
+    
+
+    % constructing A matrix
+end

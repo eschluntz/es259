@@ -1,0 +1,14 @@
+%function [dist] = point_line_seg_dist(a, b, p)
+a = [1,1; 1,1; 1,1];
+b = [2,1; 2,1; 2,1];
+p = [2.5,2; 2.5,2; 2.5,2;];
+
+% getting projections onto (ab)
+p_status = dot(b-a, p-a)/normSq(b-a);
+
+id_left = p_status < 0; % indices beyond a
+id_right = p_status > 1; % indices beyond b
+
+
+
+%end
