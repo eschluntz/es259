@@ -1,0 +1,10 @@
+function [ J1, J2, J3 ] = planar_jacobian(q)
+%planar_jacobian returns jacobians for each origin of a planar robot
+%   Detailed explanation goes here
+J1 = [-sin(q(1)), 0,0; cos(q(1)), 0,0];
+J2 = [-sin(q(1)) -sin(q(1) + q(2)), -sin(q(1) + q(2)), 0; ...
+        cos(q(1)) + cos(q(1) + q(2)), cos(q(1) + q(2)), 0];
+J3 = 
+
+end
+
