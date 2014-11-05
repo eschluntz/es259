@@ -1,24 +1,22 @@
-clear;
-close all;
-
-%{
-    given initial and final positions for a 3 link planar robot
+function [wps] = path3link(ps, pf, Ob)
+%{ 
+    given initial and final angles for a 3 link planar robot
     and a 3x1 vector of obstacles [x,y,r]', return a path
 %}
+addpath util;
 
 % initial variables
-Obst = [0,1,.5]';% 0,1.5,.5]';
-Qi = [0,0,0]';
-Qf = [pi/2, pi/2, pi/2]';
+Obst = Ob;
+Qi = ps;
+Qf = pf;
 
 Q = Qi;
 alpha = 1;
 beta = 3;
 safety = 1;
 step = .05;
-delta =  .1;
-stuck_counter_max = 100;
-random_step = .1;
+delta =  .05;
+stuck_counter_max = 50;
 
 error = norm(Qi - Qf);
 wps = Qi;
@@ -72,21 +70,21 @@ while (error > .02)
     end
     
     if (stuck) 
-        stuck_counter = stuck_counter + 1
+        stuck_counter = stuck_counter + 1;
         if (stuck_counter > stuck_counter_max)
             stuck = false;
-            alpha = alpha * 10;
+            beta = beta / 10;
+            safety = safety / 10;
         end
     else
         % detecting local minima
         if (size(errors,2) > 10) 
-            progress = max(errors(end-10:end)) - min(errors(end-10:end))
+            progress = max(errors(end-10:end)) - min(errors(end-10:end));
             if (progress < delta)
                 % in a local min
                 stuck = true;
-                alpha = alpha / 10;
-                safety = safety 
-                beta;
+                beta = beta * 10;
+                safety = safety * 10;
                 stuck_counter = 0;
             end
         end
