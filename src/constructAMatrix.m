@@ -46,7 +46,7 @@ a(:,1:30)
 
 
 %% Run this section to check the validity of your trajectory
-load('paths/ERIK_SCHLUNTZ_AVOID2_SLOW.mat');
+load('ERIK_PICK.mat');
 err = 0;
 
 t1 = a(2,1:end-2); t1v = diff(t1)/dt; t1a = diff(diff(t1))/dt;
