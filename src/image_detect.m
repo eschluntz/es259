@@ -5,7 +5,8 @@ function [start, goal] = image_detect(filename)
 threshold = 175;
 
 % processing image
-img = imread(filename);
+%img = imread(filename);
+img = getsnapshot(videoinput('winvideo'));
 img = rgb2gray(img);
 img = img < threshold;
 

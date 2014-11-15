@@ -1,13 +1,13 @@
 clear;
 close all;
-
+addpath('util/');
 % getting values from picture
 filename = '../data/lab5example.jpg';
 [start_px, goal_px] = image_detect(filename);
 
 % converting from pixels to world coords
-top_left = [25,10.5]; % x,y inches
-inch_per_px = .0656;
+top_left = [25,11.5]; % x,y inches
+inch_per_px = 23.5/320;
 
 start = top_left + inch_per_px .* [-start_px(2), -start_px(1)];
 goal = top_left + inch_per_px .* [-goal_px(2), -goal_px(1)];
