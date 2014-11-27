@@ -1,10 +1,12 @@
 clear;
 close all;
 
-files = {'data/steve.jpg', 'data/bridge.jpg'};
+root = 'data/raw/';
+files = {'steve.jpg', 'bridge.jpg', 'fry.jpg', 'lenna.jpg', ...
+    'mona lisa.jpg', 'nighthwk.jpg', 'opera.jpg', 'self.jpg'};
      
 for j = 1:size(files,2)
-    img = imread(files{j});
+    img = imread(strcat(root,files{j}));
     
     % resize to have largest dimension be 500
     d = max(size(img));
@@ -15,8 +17,16 @@ for j = 1:size(files,2)
     %figure;
     %imshow(gray);
     BW = edge(gray, 'canny', .2, 1);
+    
+    max_px = double(max(img(:)));
+    min_px = double(min(img(:)));
+    img = (double(img) - min_px) / (max_px - min_px);
+    %BW = pbCGTG(img);
+    imwrite(BW, strcat('data/canny/canny_',num2str(j),'.png'));
+    disp('finished photo');
     figure;
     imshow(BW);
+    pause(1);
     
     % finds edgelets
     [H,theta,rho] = hough(BW, 'Theta', -90:.1:89);
