@@ -1,4 +1,4 @@
-function [Segs] = generate_segments(img)
+function [M] = generate_segments(img)
 % generates all possible segments from an image
 % Each pixel has 16 segments leaving it, 2 neighbors away
 
@@ -8,8 +8,7 @@ function [Segs] = generate_segments(img)
 
     Segs = zeros(16 * max_x * max_y, 6);
     id = 1;
-
-
+    
     % each pixel
     for x = 1:size(img,2)
         for y = 1:size(img,1)
@@ -38,15 +37,13 @@ function [Segs] = generate_segments(img)
             end
         end
     end
+    
+    % trimming Segs
+    M = Segs(1:id-1,:);
 
     if debug
-        x = Segs(:,1);
-        y = Segs(:,2);
-        u = Segs(:,3) - x; 
-        v = Segs(:,4) - y;
-        quiver(x,y,u,v)
+        draw_segs(Segs);
         pause(.1);
-        Segs
     end
 end
             

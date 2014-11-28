@@ -1,0 +1,23 @@
+% assigns a filter respones to each segment in the image
+% based on the average PB response at those pixels under the seg
+
+% Segs = [x1, y1, x2, y2, Fs, l]
+% edge_im = edge detected image, double
+segs = rand(10000,6);
+edge_im = zeros(10000,1);
+N = 10;
+
+% for each segment
+parfor j = 1:size(segs,1)
+    edge_im(j) = sum(segs(j,:));
+    xs = segs(j,1) + segs(j,2);
+    % sample 10 points between p1 and p2
+    %xs = linspace(segs(j,1), segs(j,3), N);
+    %ys = linsapce(segs(j,2), segs(j,4), N);
+    %vals = interp2(edge_im, xs, ys);
+    
+    % storing the average as Fs
+    %segs(j,5) = mean(vals(:));
+    %segs(j,6) = 1;
+end
+hist(edge_im);

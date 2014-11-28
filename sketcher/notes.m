@@ -1,7 +1,7 @@
 %{
 Tasks for Sketcher
-< > create all possible segments
-< > assign Fs for each segment
+<X> create all possible segments
+<X> assign Fs for each segment
 < > t(s1, s2) function for curviness
 < > cost of curve function
     = sum(cost(segs)) + sum(transitions) + A
