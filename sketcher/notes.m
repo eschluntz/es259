@@ -26,8 +26,9 @@ Datastructures for Sketcher
     > array of adjacent segment ids
 
 > Segment
-    > [x1, y1, x2, y2, Fs, l]
+    > Segs = [x1, y1, x2, y2, Fs, l]
     > starting pont, ending point, cost, uncovered
+    > sorted by x1, y1, x2, y2
 
 > best curve
     > W[s,l]
