@@ -1,0 +1,65 @@
+function [curve] = find_curve(Segs, Starts, Ends)
+% find_curve given a set of segments, return the lowest cost density curve
+
+% data structures
+% segments are reprsented by their index in Segs
+n_segs = size(Segs,1);
+W = sparse(n_segs,200); % W[s,l] = weight of lightest curve ending at (s,l)
+T = sparse(n_segs,200); % T[s,l] = pred. of s in lightest curve at (s,l)
+key2idx = sparse(n_segs,200); % used to convert keys to idx in queue
+idx2key = zeros(n_segs,2); % go from idx back to key
+Q = pq_create(n_segs*10);
+new_idx = 1; % used for incrementing
+
+%{
+mex pq_create.cpp; 
+mex pq_push.cpp; 
+mex pq_pop.cpp; 
+mex pq_size.cpp; 
+mex pq_top.cpp;
+mex pq_delete.cpp;
+%}
+
+% initialize structures
+for j = 1:size(Segs,1)
+    
+    % getting descriptions
+    len = Seg(j,6);
+    cost = -log(Seg(j,5));
+    key2idx(j,len) = new_idx;
+    idx2key(new_idx) = [j,len];
+    new_idx = new_idx + 1;
+    
+    % saving
+    W(j,len) = cost; % cost of 1 segment
+    if len ~= 0
+        pq_push(Q, j, cost/len); % saving in queue
+    end
+end
+
+% repeatedly add items
+while (true)
+    
+    % get min
+    [idx, density] = pq_pop(Q);
+    [s,l] = idx2key(idx);
+    seg = Segs(s,:);
+    
+    % add extensions
+    s1 = Starts(seg(1),seg(2));
+    s2 = Ends(seg(1),seg(2));
+    for q = s1:s2
+        q_seg = Segs(q,:);
+        v = W(s,l) + bend_cost(seg, q_seg) + -log(q_seg(5)); % new cost
+        k = l + q_seg(6); % new length
+        
+        % better?
+        if (v < W(q,k))
+            W(q,k) = v;
+            T(q,k) = s;
+            key2idx(q,k)
+            pq_push(Q,
+        
+    
+    
+end

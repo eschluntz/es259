@@ -8,21 +8,20 @@ Tasks for Sketcher
 <X> dictionary implementation
 <X> min heap implementation
 
-<X> get best curve
+< > get best curve
     1. generate all curves of length 1, put in min-heap
     repeat:
         2. remove min from min-heap
         3. insert all possible extensions back into min-heap
     while (getting better)
-<X> termination criteria
+< > termination criteria
 < > repeatedly get best curve
 
 %}
 
 %{
 Potential problems
-< > the +A being inside the parens, alg ln 13
-
+< > the +A)l
 %}
 
 %{ 

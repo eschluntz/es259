@@ -1,4 +1,4 @@
-function [M] = generate_segments(img)
+function [M, Starts, Ends] = generate_segments(img)
 % generates all possible segments from an image
 % Each pixel has 16 segments leaving it, 2 neighbors away
 
@@ -7,11 +7,14 @@ function [M] = generate_segments(img)
     max_y = size(img,1);
 
     Segs = zeros(16 * max_x * max_y, 6);
+    Starts = zeros(size(img));
+    Ends = zeros(size(img));
     id = 1;
     
     % each pixel
     for x = 1:size(img,2)
         for y = 1:size(img,1)
+            Starts(x,y) = id;
             % add neighbors in spiral
             for dp = -1:2
 
@@ -35,6 +38,7 @@ function [M] = generate_segments(img)
                 ny = y + dp;
                 [Segs, id] = add_seg(x,y,nx,ny, Segs, id, max_x, max_y);
             end
+            Ends(x,y) = id-1;
         end
     end
     
