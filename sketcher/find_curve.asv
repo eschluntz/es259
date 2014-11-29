@@ -2,7 +2,7 @@
 % find_curve given a set of segments, return the lowest cost density curve
 
     %%%%% constants
-    A = 2;
+    A = 1;
 
     %%%%% data structures
     n_segs = size(Segs,1);
@@ -68,6 +68,9 @@
                     min_A_density = (v + A) / k;
                     min_seg = [q, k];
                 end
+                disp('found better');
+                disp(q);
+                disp(k);
                 insert(Q, v/k, [q,k]);
             end
         end

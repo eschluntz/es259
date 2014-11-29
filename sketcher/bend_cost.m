@@ -17,4 +17,6 @@ function [c] = bend_cost(s1, s2)
     else
         c = 0;
     end
+    
+    assert(c >= 0);
 end

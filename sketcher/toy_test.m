@@ -6,7 +6,8 @@ close all;
 
 addpath('myqueue_1.1');
 % fake data
-img = tril(ones(10));
+%img = tril(ones(10));
+img = [ones(10,5), zeros(10,5)];
 edge_im = edge(img);
 
 % start process
@@ -19,3 +20,7 @@ Segs = assign_fs(Segs, edge_im);
 % get best curve
 disp('getting best');
 find_curve;
+
+imshow(img);
+hold on;
+plot(curve(:,1), curve(:,2));

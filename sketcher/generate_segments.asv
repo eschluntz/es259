@@ -47,13 +47,6 @@ function [M, Starts, Ends] = generate_segments(img)
         end
     end
     
-    % Asserting
-    for x = 1:size(img,2)
-        for y = 1:size(img,1)
-            assert(Segs(Starts(x,y)) == Segs(Ends(x,y)));
-        end
-    end
-    
     % trimming Segs
     M = Segs(1:id-1,:);
 

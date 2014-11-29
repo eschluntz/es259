@@ -22,11 +22,15 @@ Tasks for Sketcher
 
 %{
 Potential problems
-< > queue not working
-< > segments not lining up
-< > add asserts everywhere
-< > min heap vs max heap
-< > the +A being inside the parens, alg ln 13
+<X> queue not working
+<X> segments not lining up
+<X> infinite default value
+<?> neg weight
+<X> add asserts everywhere
+<X> no termination
+<X> min heap vs max heap
+<X> the +A being inside the parens, alg ln 13
+< > inconsistent termination
 
 %}
 

@@ -18,6 +18,7 @@ function [segs] = assign_fs(segs, edge_im)
 
         % storing the average as Fs
         result(j) = mean(vals(:));
+        assert(result(j) >= 0);
     end
 
     % storing result
