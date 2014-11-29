@@ -1,4 +1,4 @@
-function [curve] = find_curve(Segs, Starts, Ends)
+%function [curve] = find_curve(Segs, Starts, Ends)
 % find_curve given a set of segments, return the lowest cost density curve
 
     %%%%% constants
@@ -15,24 +15,23 @@ function [curve] = find_curve(Segs, Starts, Ends)
     min_seg = [0,0]; % used for termination criteria
     min_cost = inf;
 
-
     %{
-    mex pq_create.cpp; 
-    mex pq_push.cpp; 
-    mex pq_pop.cpp; 
-    mex pq_size.cpp; 
-    mex pq_top.cpp;
-    mex pq_delete.cpp;
+    mex myqueue_1.1/pq_create.cpp; 
+    mex myqueue_1.1/pq_push.cpp; 
+    mex myqueue_1.1/pq_pop.cpp; 
+    mex myqueue_1.1/pq_size.cpp; 
+    mex myqueue_1.1/pq_top.cpp;
+    mex myqueue_1.1/pq_delete.cpp;
     %}
 
     % initialize structures
     for j = 1:size(Segs,1)
 
         % getting descriptions
-        len = Seg(j,6);
-        cost = seg_cost(Seg(j,:));
+        len = Segs(j,6);
+        cost = seg_cost(Segs(j,:));
         key2idx(j,len) = new_idx;
-        idx2key(new_idx) = [j,len];
+        idx2key(new_idx,:) = [j,len];
 
         % updating min
         if (cost < min_cost)
@@ -43,6 +42,7 @@ function [curve] = find_curve(Segs, Starts, Ends)
         % saving
         W(j,len) = cost; % cost of 1 segment
         if len ~= 0
+            disp('pushing');
             pq_push(Q, new_idx, cost/len); % saving in queue
         end
         new_idx = new_idx + 1;
@@ -52,8 +52,10 @@ function [curve] = find_curve(Segs, Starts, Ends)
     while (true)
 
         % get min
+        disp('popping');
         [idx, density] = pq_pop(Q);
-        [s,l] = idx2key(idx);
+        s = idx2key(idx,1);
+        l = idx2key(idx,2);
         seg = Segs(s,:);
 
         % check termination criteria
@@ -81,7 +83,7 @@ function [curve] = find_curve(Segs, Starts, Ends)
                 end
 
                 key2idx(q,k) = new_idx;
-                idx2key(new_idx) = [q,k];
+                idx2key(new_idx,:) = [q,k];
                 pq_push(Q, new_idx, v/k);
                 new_idx = new_idx + 1;
             end
@@ -96,4 +98,4 @@ function [curve] = find_curve(Segs, Starts, Ends)
         s = T(s,l);
     end
 
-end
+%end

@@ -15,12 +15,17 @@ Tasks for Sketcher
         3. insert all possible extensions back into min-heap
     while (getting better)
 <X> termination criteria
+< > debug best curve
 < > repeatedly get best curve
 
 %}
 
 %{
 Potential problems
+< > queue not working
+< > segments not lining up
+< > add asserts everywhere
+< > min heap vs max heap
 < > the +A being inside the parens, alg ln 13
 
 %}

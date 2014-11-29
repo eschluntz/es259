@@ -9,7 +9,7 @@ function [segs] = assign_fs(segs, edge_im)
     result = zeros(size(segs,1),1);
 
     % for each segment
-    parfor j = 1:size(segs,1)
+    for j = 1:size(segs,1)
         sg = segs(j,:);
         % sample 10 points between p1 and p2
         xs = linspace(sg(1), sg(3), N);
