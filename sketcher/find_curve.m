@@ -4,8 +4,8 @@
 
     %%%%% data structures
     n_segs = size(Segs,1);
-    W = DefaultDict(n_segs,250, inf); % W[s,l] = weight of lightest curve ending at (s,l)
-    T = sparse(n_segs,250); % T[s,l] = pred. of s in lightest curve at (s,l)
+    W = DefaultDict(n_segs,600, inf); % W[s,l] = weight of lightest curve ending at (s,l)
+    T = sparse(n_segs,600); % T[s,l] = pred. of s in lightest curve at (s,l)
     Q = PriorityQueue(false);
     min_seg = [0,0]; % used for termination criteria
     min_A_density = inf;
@@ -15,6 +15,7 @@
     iter = 0;
 
     % initialize structures
+    
     for j = 1:size(Segs,1)
 
         % getting descriptions
@@ -33,8 +34,9 @@
 
         % saving
         insert(W,j,len,cost); % cost of 1 segment
-        insert(Q, cost/len, [j, len]); % saving in queue
+        insert(Q, (cost+A)/len, [j, len]); % saving in queue
     end
+    
 
     disp('done adding');
     % repeatedly add items
@@ -49,12 +51,28 @@
 
         % check termination criteria
         if min_A_density <= density
-            break;
+            %break;
+        end
+        
+        if seg(2) > 200
+            debug = true;
+        else
+            debug = false;
+        end
+        
+        if debug
+            trace_curve(s, l, edge_im, Segs, T);
+            pause(.01);
         end
 
         % add extensions
         s1 = Starts(seg(3),seg(4));
         s2 = Ends(seg(3),seg(4));
+        
+        if debug
+            draw_segs(Segs(s1:s2-1,:));
+            pause(.01);
+        end
         for q = s1:s2-1
             q_seg = Segs(q,:);
             v = get(W,s,l) + bend_cost(seg, q_seg) + seg_cost(q_seg); % new cost
@@ -73,15 +91,11 @@
                     min_seg = [q, k];
                     
                     % debug
-                    subplot(1,2,1);
-                    trace_curve(q, k, edge_im, Segs, T);
-                    bests = [bests; [iter, min_A_density]];
-                    subplot(1,2,2);
-                    plot(bests(:,1), bests(:,2));
-                    pause(.01);
+                    %trace_curve(q, k, edge_im, Segs, T);
+                    %pause(.01);
                     
                 end
-                insert(Q, v/k, [q,k]);
+                insert(Q, (v+A)/k, [q,k]);
             end
         end
     end

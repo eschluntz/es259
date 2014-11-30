@@ -8,7 +8,7 @@ for l = len:-1:1
 end
 
 cla;
-imagesc(img);
+imshow(img);
 hold on;
 
 x = curve(:,1);

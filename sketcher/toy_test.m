@@ -4,14 +4,20 @@
 clear;
 close all;
 
-addpath('myqueue_1.1');
 % fake data
 %img = tril(ones(500));
-img = [ones(100,25), zeros(100,75)];
-%img = imresize(rgb2gray(imread('data/raw/steve.jpg')),[500,500]);
-edge_im = edge(img);
+%img = [ones(100,25), zeros(100,75)];
+%edge_im = edge(img);
+img = rgb2gray(imread('data/raw/steve.jpg'));
+edge_im = double(imread('data/pb/pb_1.png'));
+edge_im = edge_im / max(edge_im(:));
+edge_im = edge_im .* (edge_im > .1);
 
-A = 5;
+% connect image
+se = strel('disk',1);
+edge_im = imclose(edge_im,se);
+
+A = 20;
 
 % start process
 disp('generating segments');

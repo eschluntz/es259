@@ -12,10 +12,10 @@ function [c] = bend_cost(s1, s2)
     th = abs(atan2(norm(cross(v1,v2)), dot(v1,v2)));
 
     % cost as a function of theta
-    if (th > pi / 5)
-        c = inf;
-    else
+    if (th < pi / 2)
         c = 0;
+    else
+        c = inf;
     end
     
     assert(c >= 0);

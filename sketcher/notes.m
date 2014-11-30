@@ -15,13 +15,7 @@ Tasks for Sketcher
         3. insert all possible extensions back into min-heap
     while (getting better)
 <X> termination criteria
-< > debug best curve
-< > repeatedly get best curve
-
-%}
-
-%{
-Potential problems
+<X> debug best curve
 <X> queue not working
 <X> segments not lining up
 <X> infinite default value
@@ -33,10 +27,12 @@ Potential problems
 <X> A effects curve termination
 <X> incorrectly calculating density
 <X> throw out useless segments
-< > reusing segments
+<X> longer first
 < > better termination criteria
+< > repeatedly get best curve
 
 %}
+
 
 %{ 
 Datastructures for Sketcher
