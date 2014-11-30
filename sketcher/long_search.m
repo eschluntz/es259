@@ -1,7 +1,6 @@
-% function [] = long_search(G,edge_im)
+%function [] = long_search(G,edge_im)
 % finds approximate longest path in image
 
-im_size = [100,100];
 % pick origin node
 [r,c] = find(G);
 origin = datasample(r,1);
@@ -46,11 +45,11 @@ end
 % converting to pixels
 curve = zeros(size(pathi,1),2);
 for j = 1:size(pathi,1)
-    [y,x] = ind2sub(im_size, pathi(j));
+    [y,x] = ind2sub(size(edge_im), pathi(j));
     curve(j,:) = [x,y];
 end
 
 imshow(edge_im);
 hold on;
 plot(curve(:,1), curve(:,2), 'linewidth',4);
-
+%end
