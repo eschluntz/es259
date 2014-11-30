@@ -1,61 +1,79 @@
-function [M, Starts, Ends] = generate_segments(img)
+function [M, Starts, Ends] = generate_segments(edge_im)
 % generates all possible segments from an image
 % Each pixel has 16 segments leaving it, 2 neighbors away
 
     %{
         RI: M is sorted by the (x,y) position of the start of the seg
-        RI: only and all Seg(Starts(a,b):Ends(a,b)) = [a,b,...]
+        RI: only and all Seg(Starts(a,b):Ends(a,b)-1) = [a,b,...]
     %}
 
     debug = false;
-    max_x = size(img,2);
-    max_y = size(img,1);
+    max_x = size(edge_im,2);
+    max_y = size(edge_im,1);
 
     Segs = zeros(16 * max_x * max_y, 6);
-    Starts = zeros(size(img));
-    Ends = zeros(size(img));
+    Starts = zeros(size(edge_im));
+    Ends = zeros(size(edge_im));
     id = 1;
     
     % each pixel
-    for x = 1:size(img,2)
-        for y = 1:size(img,1)
+    for x = 1:size(edge_im,2)
+        for y = 1:size(edge_im,1)
             Starts(x,y) = id;
-            % add neighbors in spiral
-            for dp = -1:2
+            if (edge_im(y,x)) % skip non edges
+                % add neighbors in spiral
+                for dp = -1:2
 
-                % top
-                nx = x + dp;
-                ny = y + 2;
-                [Segs, id] = add_seg(x,y,nx,ny, Segs, id, max_x, max_y);
+                    % top
+                    nx = x + dp;
+                    ny = y + 2;
+                    if valid_px(x,y,nx,ny, max_x, max_y)
+                        if edge_im(ny,nx)
+                            Segs(id,:) = [x,y, nx, ny, 0, 0];
+                            id = id + 1;
+                        end
+                    end
 
-                % right
-                nx = x + 2;
-                ny = y - dp;
-                [Segs, id] = add_seg(x,y,nx,ny, Segs, id, max_x, max_y);
+                    % right
+                    nx = x + 2;
+                    ny = y - dp;
+                    if valid_px(x,y,nx,ny, max_x, max_y)
+                        if edge_im(ny,nx)
+                            Segs(id,:) = [x,y, nx, ny, 0, 0];
+                            id = id + 1;
+                        end
+                    end
 
-                % bottom
-                nx = x - dp;
-                ny = y - 2;
-                [Segs, id] = add_seg(x,y,nx,ny, Segs, id, max_x, max_y);
+                    % bottom
+                    nx = x - dp;
+                    ny = y - 2;
+                    if valid_px(x,y,nx,ny, max_x, max_y)
+                        if edge_im(ny,nx)
+                            Segs(id,:) = [x,y, nx, ny, 0, 0];
+                            id = id + 1;
+                        end
+                    end
 
-                % left
-                nx = x - 2;
-                ny = y + dp;
-                [Segs, id] = add_seg(x,y,nx,ny, Segs, id, max_x, max_y);
+                    % left
+                    nx = x - 2;
+                    ny = y + dp;
+                    if valid_px(x,y,ny,nx, max_x, max_y)
+                        if edge_im(ny,nx)
+                            Segs(id,:) = [x,y, nx, ny, 0, 0];
+                            id = id + 1;
+                        end
+                    end
+                end
             end
-            Ends(x,y) = id-1;
+            Ends(x,y) = id;
         end
     end
     
-    % Asserting
-    for x = 1:size(img,2)
-        for y = 1:size(img,1)
-            assert(Segs(Starts(x,y)) == Segs(Ends(x,y)));
-        end
-    end
     
     % trimming Segs
     M = Segs(1:id-1,:);
+    
+    size(M,1)
 
     if debug
         draw_segs(Segs);

@@ -4,7 +4,7 @@ function [segs] = assign_fs(segs, edge_im)
 
     % Segs = [x1, y1, x2, y2, Fs, l]...
     % edge_im = edge detected image, double
-    N = 10;
+    N = 5;
 
     result = zeros(size(segs,1),1);
 

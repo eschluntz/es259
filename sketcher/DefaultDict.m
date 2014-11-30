@@ -11,8 +11,8 @@ classdef DefaultDict < handle
     methods
         function obj = DefaultDict(m,n, val)
             % size, size, default value
-            obj.v = sparse(m,n);
-            obj.s = sparse(m,n);
+            obj.v = zeros(m,n); %sparse
+            obj.s = zeros(m,n); %sparse
             obj.default = val;
         end
         

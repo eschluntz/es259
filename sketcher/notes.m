@@ -30,7 +30,11 @@ Potential problems
 <X> no termination
 <X> min heap vs max heap
 <X> the +A being inside the parens, alg ln 13
-< > inconsistent termination
+<X> A effects curve termination
+<X> incorrectly calculating density
+<X> throw out useless segments
+< > reusing segments
+< > better termination criteria
 
 %}
 

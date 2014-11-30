@@ -1,16 +1,18 @@
-%function [curve] = find_curve(Segs, Starts, Ends)
+%function [curve] = find_curve(Segs, Starts, Ends, A)
 % find_curve given a set of segments, return the lowest cost density curve
 
-    %%%%% constants
-    A = 2;
 
     %%%%% data structures
     n_segs = size(Segs,1);
-    W = DefaultDict(n_segs,200, inf); % W[s,l] = weight of lightest curve ending at (s,l)
-    T = sparse(n_segs,200); % T[s,l] = pred. of s in lightest curve at (s,l)
+    W = DefaultDict(n_segs,250, inf); % W[s,l] = weight of lightest curve ending at (s,l)
+    T = sparse(n_segs,250); % T[s,l] = pred. of s in lightest curve at (s,l)
     Q = PriorityQueue(false);
     min_seg = [0,0]; % used for termination criteria
     min_A_density = inf;
+    
+    %%%%% Termination criteria
+    bests = [];
+    iter = 0;
 
     % initialize structures
     for j = 1:size(Segs,1)
@@ -37,7 +39,8 @@
     disp('done adding');
     % repeatedly add items
     while (true)
-
+        iter = iter + 1;
+        
         % get min
         [density, key] = pop(Q);
         s = key(1);
@@ -52,7 +55,7 @@
         % add extensions
         s1 = Starts(seg(3),seg(4));
         s2 = Ends(seg(3),seg(4));
-        for q = s1:s2
+        for q = s1:s2-1
             q_seg = Segs(q,:);
             v = get(W,s,l) + bend_cost(seg, q_seg) + seg_cost(q_seg); % new cost
             k = l + q_seg(6); % new length
@@ -61,12 +64,22 @@
             if (v < get(W,q,k))
                 insert(W,q,k,v);
                 T(q,k) = s;
+                
 
                 % best? updating min
                 if (v + A) / k < min_A_density
                     disp('found best');
                     min_A_density = (v + A) / k;
                     min_seg = [q, k];
+                    
+                    % debug
+                    subplot(1,2,1);
+                    trace_curve(q, k, edge_im, Segs, T);
+                    bests = [bests; [iter, min_A_density]];
+                    subplot(1,2,2);
+                    plot(bests(:,1), bests(:,2));
+                    pause(.01);
+                    
                 end
                 insert(Q, v/k, [q,k]);
             end
