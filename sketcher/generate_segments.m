@@ -22,42 +22,12 @@ function [M, Starts, Ends] = generate_segments(edge_im)
             Starts(x,y) = id;
             if (edge_im(y,x)) % skip non edges
                 % add neighbors in spiral
-                for dp = -1:2
-
-                    % top
-                    nx = x + dp;
-                    ny = y + 2;
+                dxs = [-1, 0, 1, 1, 1, 0, -1, -1];
+                dys = [-1, -1, -1, 0, 1, 1, 1, 0];
+                for j = 1:8
+                    nx = x + dxs(j);
+                    ny = y + dys(j);
                     if valid_px(x,y,nx,ny, max_x, max_y)
-                        if edge_im(ny,nx)
-                            Segs(id,:) = [x,y, nx, ny, 0, 0];
-                            id = id + 1;
-                        end
-                    end
-
-                    % right
-                    nx = x + 2;
-                    ny = y - dp;
-                    if valid_px(x,y,nx,ny, max_x, max_y)
-                        if edge_im(ny,nx)
-                            Segs(id,:) = [x,y, nx, ny, 0, 0];
-                            id = id + 1;
-                        end
-                    end
-
-                    % bottom
-                    nx = x - dp;
-                    ny = y - 2;
-                    if valid_px(x,y,nx,ny, max_x, max_y)
-                        if edge_im(ny,nx)
-                            Segs(id,:) = [x,y, nx, ny, 0, 0];
-                            id = id + 1;
-                        end
-                    end
-
-                    % left
-                    nx = x - 2;
-                    ny = y + dp;
-                    if valid_px(x,y,ny,nx, max_x, max_y)
                         if edge_im(ny,nx)
                             Segs(id,:) = [x,y, nx, ny, 0, 0];
                             id = id + 1;

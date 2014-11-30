@@ -13,6 +13,7 @@
     %%%%% Termination criteria
     bests = [];
     iter = 0;
+    A = 100;
 
     % initialize structures
     
@@ -54,11 +55,11 @@
             %break;
         end
         
-        if seg(2) > 200
+        %if seg(2) > 200
             debug = true;
-        else
-            debug = false;
-        end
+        %else
+        %    debug = false;
+        %end
         
         if debug
             trace_curve(s, l, edge_im, Segs, T);
