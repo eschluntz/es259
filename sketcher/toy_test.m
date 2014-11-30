@@ -3,33 +3,30 @@
 
 clear;
 close all;
-
+addpath('matlab_bgl');
 % fake data
 %img = tril(ones(500));
 %img = [ones(100,25), zeros(100,75)];
-%edge_im = edge(img);
-img = rgb2gray(imread('data/raw/steve.jpg'));
-edge_im = double(imread('data/pb/pb_1.png'));
-edge_im = edge_im / max(edge_im(:));
-edge_im = edge_im .* (edge_im > .1);
+
+img = imresize(rgb2gray(imread('data/raw/steve.jpg')),[100,100]);
+%edge_im = double(imread('data/pb/pb_1.png'));
+%edge_im = edge_im / max(edge_im(:));
+%edge_im = edge_im .* (edge_im > .1);
+edge_im = edge(img);
 
 % connect image
 se = strel('disk',1);
 edge_im = imclose(edge_im,se);
 
-A = 20;
+% data structure
+G = sparse(numel(img),numel(img));
+Curves = zeros(1000,50);
 
-% start process
-disp('generating segments');
-[Segs, Starts, Ends] = generate_segments(edge_im);
+% create edges
+disp('generating edges');
+%[G] = generate_segments(G,edge_im);
+generate_segments;
 
-disp('assigning segments');
-Segs = assign_fs(Segs, edge_im);
-
-% get best curve
-disp('getting best');
-find_curve;
-
-imagesc(edge_im);
-hold on;
-plot(curve(:,1), curve(:,2));
+% find longest
+disp('finding paths');
+long_search;

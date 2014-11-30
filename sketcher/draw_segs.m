@@ -5,8 +5,5 @@ y = Segs(:,2);
 u = Segs(:,3) - x; 
 v = Segs(:,4) - y;
 
-u = u .* Segs(:,5);
-v = v .* Segs(:,5);
-
-quiver(x,y,u,v)
+quiver(x,y,u,v,0)
 end

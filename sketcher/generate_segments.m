@@ -1,25 +1,19 @@
-function [M, Starts, Ends] = generate_segments(edge_im)
+%function [G] = generate_segments(G, edge_im)
 % generates all possible segments from an image
-% Each pixel has 16 segments leaving it, 2 neighbors away
+% Each pixel has 8 neighbors
+
+    
 
     %{
-        RI: M is sorted by the (x,y) position of the start of the seg
-        RI: only and all Seg(Starts(a,b):Ends(a,b)-1) = [a,b,...]
+        RI: G(p1,p2) p1 < p2
     %}
 
-    debug = false;
     max_x = size(edge_im,2);
     max_y = size(edge_im,1);
 
-    Segs = zeros(16 * max_x * max_y, 6);
-    Starts = zeros(size(edge_im));
-    Ends = zeros(size(edge_im));
-    id = 1;
-    
     % each pixel
     for x = 1:size(edge_im,2)
         for y = 1:size(edge_im,1)
-            Starts(x,y) = id;
             if (edge_im(y,x)) % skip non edges
                 % add neighbors in spiral
                 dxs = [-1, 0, 1, 1, 1, 0, -1, -1];
@@ -29,25 +23,24 @@ function [M, Starts, Ends] = generate_segments(edge_im)
                     ny = y + dys(j);
                     if valid_px(x,y,nx,ny, max_x, max_y)
                         if edge_im(ny,nx)
-                            Segs(id,:) = [x,y, nx, ny, 0, 0];
-                            id = id + 1;
+                            % add edge
+                            p1 = sub2ind(size(edge_im),y,x);
+                            p2 = sub2ind(size(edge_im),ny,nx);
+                            assert((edge_im(y,x) + edge_im(ny,nx))/2 >= 0);
+                            assert((edge_im(y,x) + edge_im(ny,nx))/2 <= 1);
+                            G(p1,p2) = (edge_im(y,x) + edge_im(ny,nx))/2;
+                            G(p2,p1) = (edge_im(y,x) + edge_im(ny,nx))/2;
                         end
                     end
                 end
             end
-            Ends(x,y) = id;
         end
+        x
     end
     
+    % display how many edges were created
+    find(G)
+    nnz(G)
     
-    % trimming Segs
-    M = Segs(1:id-1,:);
-    
-    size(M,1)
-
-    if debug
-        draw_segs(Segs);
-        pause(.1);
-    end
-end
+%end
             

@@ -1,3 +1,31 @@
+
+
+%{
+BFS implementation
+
+Datastructure:
+possible
+> All pixels are nodes
+two pixels have an edge if they are adjacent and both have edges
+RI: G(p1,p2) p1 < p2
+
+1. pick a random pixel and BFS from it
+2. take all local maxima from search 
+3. BFS from each of those pixels
+4. take longest path returned by any of those searches
+5. record and remove those nodes, repeat
+
+TODO
+<X> datastructures for graph
+<X> generate edges from image
+<X> BFS
+<X> local maxima
+< > record, 
+< > remove, 
+< > repeat
+
+%}
+
 %{
 Tasks for Sketcher
 <X> create all possible segments
@@ -32,7 +60,6 @@ Tasks for Sketcher
 < > repeatedly get best curve
 
 %}
-
 
 %{ 
 Datastructures for Sketcher
