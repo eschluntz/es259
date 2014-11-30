@@ -2,8 +2,7 @@ clear;
 close all;
 
 root = 'data/raw/';
-files = {'steve.jpg', 'bridge.jpg', 'fry.jpg', 'lenna.jpg', ...
-    'mona lisa.jpg', 'nighthwk.jpg', 'opera.jpg', 'self.jpg'};
+files = {'taj.jpg','pyramid.jpg'};
      
 for j = 1:size(files,2)
     img = imread(strcat(root,files{j}));
@@ -16,13 +15,13 @@ for j = 1:size(files,2)
     gray = rgb2gray(img);
     %figure;
     %imshow(gray);
-    BW = edge(gray, 'canny', .2, 1);
+    %BW = edge(gray, 'canny', .2, 1);
     
     max_px = double(max(img(:)));
     min_px = double(min(img(:)));
     img = (double(img) - min_px) / (max_px - min_px);
-    %BW = pbCGTG(img);
-    imwrite(BW, strcat('data/canny/canny_',num2str(j),'.png'));
+    BW = pbCGTG(img);
+    imwrite(BW, strcat('data/pb/pb_',num2str(j+8),'.png'));
     disp('finished photo');
     figure;
     imshow(BW);

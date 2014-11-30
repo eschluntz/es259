@@ -1,11 +1,14 @@
-% function [] = long_search(G,edge_im)
+%function [] = long_search(G,edge_im)
 % finds approximate longest path in image
 
+imshow(edge_im);
+hold on;
+for iter = 1:10
 
 % pick origin node
 [r,c] = find(G);
 origin = datasample(r,1);
-origin = 187;
+%origin = 187;
 
 % BFS
 [d, pred] = shortest_paths(G, origin);
@@ -43,4 +46,22 @@ while (dest ~= start)
     pathi = [pathi; dest];
 end
 
-% co
+% converting to pixels
+curve = zeros(size(pathi,1),2);
+for j = 1:size(pathi,1)
+    [y,x] = ind2sub(size(edge_im), pathi(j));
+    curve(j,:) = [x,y];
+end
+
+%showing
+plot(curve(:,1), curve(:,2), 'linewidth',4);
+hold on;
+
+% removing edges in path
+for j = 2:size(pathi,1)
+    G(pathi(j-1),pathi(j)) = 0;
+    G(pathi(j),pathi(j-1)) = 0;
+end
+
+
+%end

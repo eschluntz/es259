@@ -1,30 +1,50 @@
 % Toy script
 % tests the pipeline with a small toy example
-
+%{
 clear;
 close all;
 addpath('matlab_bgl');
-% fake data
-%img = tril(ones(500));
-%img = [ones(100,25), zeros(100,75)];
 
-edge_im = imresize(double(imread('data/pb/pb_2.png')),[500,500]);
-edge_im = edge_im / max(edge_im(:));
-edge_im = edge_im .* (edge_im > .1);
-%edge_im = edge(img);
+% constants
+tries = 40;
+min_len = 20;
+name = 'data/pb/pb_10.png';
 
-% connect image
-se = strel('disk',1);
-edge_im = imclose(edge_im,se);
+% load image
+disp('getting image');
+edge_im = load_img(name);
 
 % data structure
+disp('creating graph');
 G = sparse(numel(edge_im),numel(edge_im));
-Curves = zeros(1000,50);
 
 % create edges
 disp('generating edges');
-generate_segments;
+G = generate_segments(G, edge_im);
 
-% find longest
+% find paths
 disp('finding paths');
-long_search;
+[axs, ays, alens] = long_search(G, size(edge_im), tries);
+%}
+% get best paths
+disp('picking best paths');
+picks = find(alens > min_len);
+pxs = axs(:,picks);
+pys = ays(:,picks);
+lens = alens(picks);
+
+% replacing zeros
+pxs(~pxs) = NaN;
+pys(~pys) = NaN;
+
+% displaying best paths
+close;
+imshow(edge_im);
+hold on;
+plot(pxs(:),pys(:),'.');
+
+figure;
+% turning into trajectories
+disp('getting workspace trajectories');
+get_trajectories;
+

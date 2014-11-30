@@ -4,24 +4,37 @@
 clear;
 close all;
 addpath('matlab_bgl');
-% fake data
-%img = tril(ones(500));
-%img = [ones(100,25), zeros(100,75)];
-%edge_im = edge(img);
-img = rgb2gray(imread('data/raw/steve.jpg'));
-edge_im = double(imread('data/pb/pb_1.png'));
-edge_im = edge_im / max(edge_im(:));
-edge_im = edge_im .* (edge_im > .1);
 
-% connect image
-se = strel('disk',1);
-edge_im = imclose(edge_im,se);
+% constants
+tries = 40;
+min_len = 20;
+name = 'data/pb/pb_10.png';
+
+% load image
+disp('getting image');
+edge_im = load_img(name);
 
 % data structure
-G = sparse(numel(img),numel(img),8*numel(img));
-Curves = zeros(1000,50);
+disp('creating graph');
+G = sparse(numel(edge_im),numel(edge_im));
 
-% start process
+% create edges
 disp('generating edges');
-%[G] = generate_segments(G,edge_im);
-generate_segments;
+G = generate_segments(G, edge_im);
+
+% find paths
+disp('finding paths');
+[axs, ays, alens] = long_search(G, size(edge_im), tries);
+
+% get best paths
+disp('picking best paths');
+picks = find(alens > min_len);
+xs = axs(:,picks);
+ys = ays(:,picks);
+lens = alens(picks);
+
+% displaying best paths
+close;
+imshow(edge_im);
+plot(xs(:),ys(:),'.
+

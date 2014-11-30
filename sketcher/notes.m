@@ -1,7 +1,7 @@
 
 
 %{
-BFS implementation
+BFS implementation: Done
 
 Datastructure:
 possible
@@ -20,11 +20,18 @@ TODO
 <X> generate edges from image
 <X> BFS
 <X> local maxima
-< > record, 
-< > remove, 
-< > repeat
-
+<X> record, 
+<X> remove, 
+<X> repeat
 %}
+
+%{
+Trajectory Planning
+< > find workspace limits
+< > find draw/move heights
+
+
+% Abandoned:
 
 %{
 Tasks for Sketcher

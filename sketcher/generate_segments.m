@@ -1,4 +1,4 @@
-%function [G] = generate_segments(G, edge_im)
+function [G] = generate_segments(G, edge_im)
 % generates all possible segments from an image
 % Each pixel has 8 neighbors
 
@@ -35,12 +35,7 @@
                 end
             end
         end
-        x
     end
     
-    % display how many edges were created
-    find(G)
-    nnz(G)
-    
-%end
+end
             
