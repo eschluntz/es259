@@ -1,7 +1,7 @@
-%function [xyz] = get_trajectories(pxs, pys, lens, im_size)
+function [xyz] = get_trajectories(pxs, pys, lens)
 % turns a list of pixel paths into workspace trajectories
 % .1s between each waypoint
-
+figure;
 xyz = [];
 
 % constraints
@@ -10,18 +10,36 @@ px_max = max(pxs(:));
 py_min = min(pys(:));
 py_max = max(pys(:));
 
-wx_min = -7; % TODO
-wx_max = 7;
-wy_min = 20;
-wy_max = 28;
+% flipping?
+
+if (px_max - px_min) > (py_max - py_min)
+    tmp = pxs;
+    pxs = -pys;
+    pys = tmp;
+    
+    px_min = min(pxs(:));
+    px_max = max(pxs(:));
+    py_min = min(pys(:));
+    py_max = max(pys(:));
+
+end
+
+wx_min = 13;
+wx_max = 18;
+wy_min = -5;
+wy_max = 5;
+% pyrs: 11, 19, -5, 5
+% jobs: 12, 18, -5, 5
+% bridge: 13, 18, -5, 5
+
 
 
 % constants
-z_draw = 8; % TODO
-z_move = 9;
+z_draw = 11; % TODO
+z_move = 12;
 pts_up = 3; % number of points when doing vertical transitions
 mv_speed = 1; % inches / .1 sec while moving
-sample_rate = 10; % frequency of pixels to sample
+sample_rate = 5; % period of pixels to sample
 n = size(lens);
 
 
@@ -32,7 +50,7 @@ ratio = min(x_ratio, y_ratio);
 
 % centering
 cpx = (px_max + px_min)/2;
-cpy = (px_max + px_min)/2;
+cpy = (py_max + py_min)/2;
 cwx = (wx_max + wx_min)/2;
 cwy = (wy_max + wy_min)/2;
 cur_pos = [cwx, cwy]; % current pos of arm
@@ -64,16 +82,13 @@ while (size(ends,1))
     dists = [ends(:,1) - cur_pos(1), ends(:,2) - cur_pos(2)];
     dists = sum(dists .* dists,2);
     [d,i] = min(dists);
-    
-    disp('closest');
-    disp(i);
-    disp(ends(i,:));
 
     % move to segment
     [seg, cur_pos] = move_to(cur_pos, ends(i,1:2), z_move, mv_speed);
     xyz = [xyz; seg];
     
     plot3(xyz(:,1), xyz(:,2), xyz(:,3));
+    axis equal;
     pause(dt);
 
     % go down
@@ -81,6 +96,7 @@ while (size(ends,1))
     xyz = [xyz; seg];
     
     plot3(xyz(:,1), xyz(:,2), xyz(:,3));
+    axis equal;
     pause(dt);
 
     % draw segment
@@ -89,6 +105,7 @@ while (size(ends,1))
     xyz = [xyz; seg];
     
     plot3(xyz(:,1), xyz(:,2), xyz(:,3));
+    axis equal;
     pause(dt);
 
     % move up
@@ -96,6 +113,7 @@ while (size(ends,1))
     xyz = [xyz; seg];
     
     plot3(xyz(:,1), xyz(:,2), xyz(:,3));
+    axis equal;
     pause(dt);
 
     % remove ends
@@ -105,4 +123,3 @@ while (size(ends,1))
     ends(i-sh,:) = [];
 end
 
-%plot3(xyz(:,1), xyz(:,2), xyz(:,3));

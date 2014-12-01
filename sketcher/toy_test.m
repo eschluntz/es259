@@ -1,5 +1,6 @@
 % Toy script
 % tests the pipeline with a small toy example
+close all;
 
 clear;
 close all;
@@ -8,8 +9,12 @@ addpath('matlab_bgl');
 % constants
 tries = 40;
 min_len = 20;
-name = 'data/pb/pb_10.png';
+name = 'data/pb/pb_6.png';
+save_name = 'ERIK_DRAW_TAJ.mat';
 
+img = imread('data/raw/lenna.jpg');
+imshow(img);
+figure;
 % load image
 disp('getting image');
 edge_im = load_img(name);
@@ -38,13 +43,24 @@ pxs(~pxs) = NaN;
 pys(~pys) = NaN;
 
 % displaying best paths
-close;
+figure;
 imshow(edge_im);
 hold on;
 plot(pxs(:),pys(:),'.');
 
-figure;
 % turning into trajectories
 disp('getting workspace trajectories');
-get_trajectories;
+xyz = get_trajectories(pxs, pys, lens);
+
+% turn into configuration space
+disp('going to config space');
+a = convert_to_config(xyz, save_name);
+
+% drawing
+figure;
+for i = 1:size(a,2)
+    cla;
+    lab_fk(deg2rad(a(2:7,i)),false);
+    pause(.01);
+end
 

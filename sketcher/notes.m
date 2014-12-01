@@ -27,8 +27,8 @@ TODO
 
 %{
 Trajectory Planning
-< > find workspace limits
-< > find draw/move heights
+<X> find workspace limits 11 < x < 18, -5 < y < 5  
+<X> find draw/move heights: wrist = 14/15in
 < > inverse kinematics
 < > save as A
 < > try for all images

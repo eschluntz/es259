@@ -27,8 +27,8 @@ for q2 = q2_a:step:q2_b
             points = [points, p];
             i = i + 1;
         end
-        i
     end
+    i
 end
 
 figure;
