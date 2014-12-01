@@ -1,6 +1,6 @@
 % Toy script
 % tests the pipeline with a small toy example
-%{
+
 clear;
 close all;
 addpath('matlab_bgl');
@@ -25,7 +25,7 @@ G = generate_segments(G, edge_im);
 % find paths
 disp('finding paths');
 [axs, ays, alens] = long_search(G, size(edge_im), tries);
-%}
+
 % get best paths
 disp('picking best paths');
 picks = find(alens > min_len);

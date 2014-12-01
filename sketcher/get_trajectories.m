@@ -34,7 +34,7 @@ ratio = min(x_ratio, y_ratio);
 cpx = (px_max + px_min)/2;
 cpy = (px_max + px_min)/2;
 cwx = (wx_max + wx_min)/2;
-cwy = (wx_max + wx_min)/2;
+cwy = (wy_max + wy_min)/2;
 cur_pos = [cwx, cwy]; % current pos of arm
 
 % shifting

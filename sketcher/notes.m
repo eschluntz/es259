@@ -29,6 +29,10 @@ TODO
 Trajectory Planning
 < > find workspace limits
 < > find draw/move heights
+< > inverse kinematics
+< > save as A
+< > try for all images
+%}
 
 
 % Abandoned:
