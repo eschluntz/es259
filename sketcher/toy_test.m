@@ -9,10 +9,10 @@ addpath('matlab_bgl');
 % constants
 tries = 40;
 min_len = 20;
-name = 'data/pb/pb_6.png';
-save_name = 'ERIK_DRAW_TAJ.mat';
+name = 'data/pb/pb_1.png';
+save_name = 'ERIK_DRAW_TMP.mat';
 
-img = imread('data/raw/lenna.jpg');
+img = imread('data/raw/pyramid.jpg');
 imshow(img);
 figure;
 % load image

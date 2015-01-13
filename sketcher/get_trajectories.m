@@ -24,8 +24,8 @@ if (px_max - px_min) > (py_max - py_min)
 
 end
 
-wx_min = 13;
-wx_max = 18;
+wx_min = 11;
+wx_max = 19;
 wy_min = -5;
 wy_max = 5;
 % pyrs: 11, 19, -5, 5

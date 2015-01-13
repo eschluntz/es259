@@ -1,4 +1,5 @@
 % ES 259 pset 6: image segmentation
+% Erik Schluntz
 clear;
 close all;
 files = {'ducks.jpg','butterflies.jpg'};
